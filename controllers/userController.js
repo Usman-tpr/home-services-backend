@@ -3,17 +3,8 @@ const jwt = require("jsonwebtoken")
 
 const signup = async (req, res) => {
     try {
-        const isExistAlready = await User.find({
-            email: req.body.email
-        })
-        // if (isExistAlready) {
-        //     return res.send({
-        //         success: false,
-        //         message: "Already Used Email Try Diffirent",
-        //         body: null
-        //     })
-        // }
-     
+
+        
         const newUser = await User(req.body);
         await newUser.save();
 
@@ -22,7 +13,7 @@ const signup = async (req, res) => {
             process.env.JWT_SECRET,
             { expiresIn: "1d" }
         );
-
+      console.log(newUser)
         res.send({
             success: true,
             message: "Added User",
@@ -77,10 +68,11 @@ const login = async (req, res) => {
     }
 }
 
-const getUserById = async ( req , res ) =>{
+const getUserByToken = async ( req , res ) =>{
     try {
+         console.log('the id')
         const user = await User.findById(req.user.userId);
-
+     console.log(user)
         res.send({
             success:true,
             message:"Retrieved Successfully",
@@ -96,5 +88,5 @@ const getUserById = async ( req , res ) =>{
 }
 
 module.exports = {
-    signup, login , getUserById
+    signup, login , getUserByToken
 }
