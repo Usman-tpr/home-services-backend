@@ -19,7 +19,9 @@ const ServiceRoutes = require("./routes/ServicesRoutes")
 // const productRoutes = require("./routes/Product Routes/ProductRoutes")
 app.use("/user" , userRoutes)
 app.use("/services" , ServiceRoutes)
-// app.use("/poll" , pollRoutes)
+const paymentRoutes = require('./routes/paymentRoutes');
+
+app.use("/payment" , paymentRoutes)
 // app.use("/poll" , yonRoutes)
 // app.use("/poll" , productRoutes)
 
