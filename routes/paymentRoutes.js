@@ -2,6 +2,8 @@
 const express = require('express');
 const router = express.Router();
 const Payment = require('../models/paymentModel');
+const bookingModel = require('../models/bookingModel');
+const authMiddleware = require('../middlewares/auth');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 router.post('/create-payment', async (req, res) => {
@@ -28,10 +30,30 @@ router.post('/create-payment', async (req, res) => {
 
     res.status(200).json({
       clientSecret: paymentIntent.client_secret,
+      success:true
     });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Payment failed' });
+  }
+});
+
+router.post('/bookings',authMiddleware, async (req, res) => {
+  try {
+       const booking = new bookingModel({
+        ...req.body,
+        userId:req.user.userId
+       })
+       await booking.save()
+
+       res.send({
+        success:true,
+        message:"Booking successfully!",
+        body:booking
+       })
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'booking failed' });
   }
 });
 

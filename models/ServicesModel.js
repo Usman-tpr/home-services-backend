@@ -22,6 +22,9 @@ const userSchema = mongoose.Schema({
     phone:{
         type:String
     },
+    payementNo:{
+        type:String
+    },
     admin:{
         type:String
     }
