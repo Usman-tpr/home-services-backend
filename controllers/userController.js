@@ -13,7 +13,6 @@ const signup = async (req, res) => {
             process.env.JWT_SECRET,
             { expiresIn: "1d" }
         );
-      console.log(newUser)
         res.send({
             success: true,
             message: "Added User",
@@ -41,7 +40,8 @@ const login = async (req, res) => {
                 body: null
             })
         }
-
+       console.log(isExistUser[0])
+       console.log(req.body.password)
         if (isExistUser[0].password != req.body.password) {
             return res.send({
                 success: false,
@@ -49,11 +49,18 @@ const login = async (req, res) => {
                 body: null
             })
         }
+
+        const token = jwt.sign(
+            { userId: isExistUser._id },
+            process.env.JWT_SECRET,
+            { expiresIn: "1d" }
+        );
         if (isExistUser[0].password == req.body.password) {
             return res.send({
                 success: true,
                 message: "Login User Successfully!",
-                body: isExistUser
+                body: isExistUser,
+                token:token
             })
         }
 
