@@ -9,6 +9,12 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 router.post('/create-payment', async (req, res) => {
   try {
     const { amount, description } = req.body;
+    
+    if(amount<200){
+      return res.send({
+        error: "Please Increase the amount"
+      })
+    }
 
     // Create a PaymentIntent with the given amount and currency
     const paymentIntent = await stripe.paymentIntents.create({
